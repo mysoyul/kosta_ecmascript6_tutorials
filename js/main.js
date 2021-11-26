@@ -2,6 +2,7 @@
 //import { calculateAmortization } from './mortgage';  //export calculateAmortization
 //import calculateAmortization from './mortgage';        //export default calculateAmortization
 import Mortgage from './mortgage2';
+import '../css/styles.css';
 
 document.getElementById('calcBtn').addEventListener('click', () => {
     let principal = document.getElementById("principal").value;

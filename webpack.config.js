@@ -1,6 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+let htmlPageNames = ['ratefinder'];
+let multipleHtmlPlugins = htmlPageNames.map(name => {
+  return new HtmlWebpackPlugin({
+    template: `./${name}.html`, // relative path to the HTML files
+    filename: `${name}.html`, // output HTML files
+    chunks: [`${name}`] // respective JS files
+  })
+});
 
 module.exports = {
   /*
@@ -29,10 +39,25 @@ module.exports = {
             presets: ['@babel/preset-env']
           }
         }
-      }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
     ]
   },//module
-  plugins: [new CleanWebpackPlugin()], //plugins
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: 'index.html',
+      chunks: ['app']
+    })
+  ].concat(multipleHtmlPlugins), //plugins
+  devServer: {
+    port: 8087,
+    open: true
+  },
   stats: {
     colors: true
   },
